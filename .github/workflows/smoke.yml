@@ -1,0 +1,34 @@
+name: Scale Set Smoke
+
+on:
+  workflow_dispatch:
+    inputs:
+      sleep_seconds:
+        description: Seconds to keep the job running
+        required: true
+        default: 10
+        type: number
+      fail:
+        description: Fail the job after the sleep
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  smoke:
+    runs-on: [scaleset-testing, cluster-a]
+    steps:
+      - name: Exercise the runner
+        shell: bash
+        run: |
+          echo "Repository: $GITHUB_REPOSITORY"
+          echo "Workflow run: $GITHUB_RUN_ID"
+          echo "Job: $GITHUB_JOB"
+          echo "Runner: $RUNNER_NAME"
+          echo "Sleeping for ${{ inputs.sleep_seconds }} seconds"
+          sleep "${{ inputs.sleep_seconds }}"
+          if [[ "${{ inputs.fail }}" == "true" ]]; then
+            echo "Intentional failure requested"
+            exit 1
+          fi
+          echo "Smoke job completed successfully"
