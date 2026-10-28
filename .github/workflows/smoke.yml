@@ -16,7 +16,7 @@ on:
 
 jobs:
   smoke:
-    runs-on: [scaleset-testing, cluster-a]
+    runs-on: testing
     steps:
       - name: Exercise the runner
         shell: bash

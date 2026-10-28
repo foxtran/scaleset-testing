@@ -6,10 +6,7 @@ The repository contains one manually triggered workflow. It prints runner and wo
 
 ## GitHub setup
 
-Create a Runner Scale Set for this repository with:
-
-- name: `scaleset-testing`;
-- labels: `scaleset-testing` and `cluster-a`.
+On startup, `ci-scheduler` finds or creates a scale set named `testing` in the default runner group, with a single `testing` label. No manual GitHub setup is required.
 
 Only one active `ci-scheduler` may use this scale set. Use a separate scale set for every additional scheduler.
 
@@ -17,14 +14,12 @@ Example `ci-scheduler.toml`:
 
 ```toml
 github_config_url = "https://github.com/foxtran/scaleset-testing"
-scale_set_id = 123
+cluster_name = "testing"
 max_runners = 1
-instance_name = "sandbox-scheduler"
-database_path = "sandbox.db"
-cluster_label = "cluster-a"
+database_path = "testing.db"
 ```
 
-Replace `scale_set_id` with the real numeric ID. The local config and database files are ignored by Git.
+The numeric scale set ID is resolved automatically. The local config and database files are ignored by Git.
 
 Run the scheduler from the `ci-scheduler` crate:
 
